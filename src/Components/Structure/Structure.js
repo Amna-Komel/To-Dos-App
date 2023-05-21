@@ -6,8 +6,7 @@ function Structure({ tasks }) {
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/todos')
+    axios.get('https://jsonplaceholder.typicode.com/todos')
       .then((res) => {
         setRecords([...tasks, ...res.data]); // Prepend tasks to existing records
       })

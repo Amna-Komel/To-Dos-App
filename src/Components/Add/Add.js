@@ -12,8 +12,7 @@ function Add({ addTask }) {
       title: inputData.title,
       completed: inputData.completed
     };
-    axios
-      .post('https://jsonplaceholder.typicode.com/todos', newTask)
+    axios.post('https://jsonplaceholder.typicode.com/todos', newTask)
       .then((response) => {
         const createdTask = {
           ...newTask,
@@ -36,34 +35,26 @@ function Add({ addTask }) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="titleInput">Title</label>
-          <input
-            type="text"
-            className="form-control"
-            id="titleInput"
-            value={inputData.title}
-            onChange={handleTitleChange}
-          />
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="completedCheckbox"
-            checked={inputData.completed}
-            onChange={handleCompletedChange}
-          />
-          <label className="form-check-label" htmlFor="completedCheckbox">
-            Completed
-          </label>
-        </div>
-        <button type="submit" className="btn btn-info">
-          Add Task
-        </button>
-      </form>
+    <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
+      <div className='w-50 border bg-light p-5'>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="titleInput">Title</label>
+            <input type="text"className="form-control"id="titleInput"value={inputData.title}
+            onChange={handleTitleChange}/>
+          </div>
+          <div>
+            <input className="form-check-input"type="checkbox" id="completedCheckbox"checked={inputData.completed}
+            onChange={handleCompletedChange}/>
+            <label className="form-check-label" htmlFor="completedCheckbox">
+              Completed
+            </label>
+          </div>
+          <button type="submit" className="btn btn-info">
+            Add Task
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
