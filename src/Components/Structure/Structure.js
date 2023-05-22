@@ -1,130 +1,103 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getTasksFromLocalStorage, deleteTaskFromLocalStorage } from '../API/API';
 
-function Structure({ tasks }) {
-  const [records, setRecords] = useState([]);
-  const navigate = useNavigate();
+function Structure() {
+  const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOption, setFilterOption] = useState('all');
 
-  // Function to handle search query change
-  const handleSearchQueryChange = (e) => {
+  useEffect(() => {
+    const tasksFromLocalStorage = getTasksFromLocalStorage();
+    setTasks(tasksFromLocalStorage);
+  }, []);
+
+  const handleDelete = (taskId) => {
+    deleteTaskFromLocalStorage(taskId);
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    alert('Task deleted successfully');
+  };
+
+  const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Function to handle filter option change
-  const handleFilterOptionChange = (e) => {
+  const handleFilter = (e) => {
     setFilterOption(e.target.value);
   };
 
-  useEffect(() => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/todos')
-      .then((res) => {
-        setRecords([...tasks, ...res.data]); // Prepend tasks to existing records
-      })
-      .catch((error) => console.log(error));
-  }, [tasks]);
-
-  // Filter tasks based on the search query and filter option
-  const filteredTasks = records.filter((task) => {
-    const titleMatches = task.title.toLowerCase().includes(searchQuery.toLowerCase());
-
-    if (filterOption === 'all') {
-      return titleMatches;
-    } else if (filterOption === 'completed') {
-      return titleMatches && task.completed;
-    } else if (filterOption === 'activate') {
-      return titleMatches && !task.completed;
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  ).filter((task) => {
+    if (filterOption === 'completed') {
+      return task.completed;
+    } else if (filterOption === 'incomplete') {
+      return !task.completed;
+    } else {
+      return true;
     }
-
-    return titleMatches;
   });
 
   return (
     <>
       <div className="container mt-5">
-        <div className="text-end">
-          <Link to="./create" className="btn btn-primary">
-            Add +
-          </Link>
-        </div>
-        {/* Search bar */}
+        <h2>Tasks</h2>
         <div className="mt-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search tasks"
-            value={searchQuery}
-            onChange={handleSearchQueryChange}
-          />
-        </div>
-        {/* Filter dropdown */}
-        <div className="mt-3">
-          <select
-            className="form-select"
-            value={filterOption}
-            onChange={handleFilterOptionChange}
-          >
-            <option value="all">All Tasks</option>
-            <option value="completed">Completed Tasks</option>
-            <option value="activate">Activate Tasks</option>
-          </select>
-        </div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Completed</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTasks.reverse().map((d, i) => (
-              <tr key={i}>
-                <td>{d.title}</td>
-                <td>
-                  {d.completed ? (
-                    <input type="checkbox" checked />
-                  ) : (
-                    <input type="checkbox" />
-                  )}
-                </td>
-                <td>
-                  <Link
-                    to={`/update/${d.id}`}
-                    className="btn btn-sm btn-success"
-                  >
-                    Update
-                  </Link>
-                  <button
-                    onClick={(e) => handleSubmit(d.id)}
-                    className="btn btn-sm ms-1 btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
+          <Link to="/add" className="btn btn-primary">Add Task</Link>
+          <div className="mt-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search tasks"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="mt-3">
+            <label htmlFor="filter" className="form-label">Filter:</label>
+            <select
+              className="form-select"
+              id="filter"
+              value={filterOption}
+              onChange={handleFilter}
+            >
+              <option value="all">All Tasks</option>
+              <option value="completed">Completed Tasks</option>
+              <option value="incomplete">Incomplete Tasks</option>
+            </select>
+          </div>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Completed</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredTasks.map((task) => (
+                <tr key={task.id}>
+                  <td>{task.title}</td>
+                  <td>{task.completed ? 'Yes' : 'No'}</td>
+                  <td>
+                    <Link to={`/edit/${task.id}`} className="btn btn-sm btn-primary me-1">
+                      Edit
+                    </Link>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDelete(task.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
-
-  function handleSubmit(id) {
-    const confirm = window.confirm('Do you really want to delete this task?');
-    if (confirm) {
-      axios
-        .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-        .then((res) => {
-          alert('Record has been deleted');
-          navigate('/');
-        })
-        .catch((error) => console.log(error));
-    }
-  }
 }
 
 export default Structure;

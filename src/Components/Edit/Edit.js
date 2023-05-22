@@ -1,43 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { getTasksFromLocalStorage, updateTaskInLocalStorage } from '../API/API';
 
-function Edit({ tasks, updateTask }) {
+function Edit() {
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
-    const task = tasks.find((task) => task.id === parseInt(id));
+    const tasksFromLocalStorage = getTasksFromLocalStorage();
+    setTasks(tasksFromLocalStorage);
+
+    const task = tasksFromLocalStorage.find((task) => task.id === parseInt(id));
+
     if (task) {
       setTitle(task.title);
       setCompleted(task.completed);
     }
-  }, [id, tasks]);
-
-  const navigate = useNavigate();
-  const [updatedTasks, setUpdatedTasks] = useState();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const data = { title:title, completed:completed }
-      const headers={"Content-type":"application/json"}
-      const response = await axios.put(
-        `https://jsonplaceholder.typicode.com/todos/${id}`,
-        data,
-        {headers}
-      );
-      console.log("response",response.data,'respojse')
-      const updatedTask = response.data;
-      
-      updateTask(updatedTask);
-      setUpdatedTasks(response.data);
-      alert('Data updated successfully');
-      navigate('/',{state:updatedTask});
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [id]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -47,38 +29,61 @@ function Edit({ tasks, updateTask }) {
     setCompleted(e.target.checked);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (title.trim() === '') {
+      alert('Please enter a task title');
+      return;
+    }
+
+    const updatedTask = {
+      id: parseInt(id),
+      title: title.trim(),
+      completed,
+    };
+
+    updateTaskInLocalStorage(updatedTask);
+    navigate('/');
+    alert('Task updated successfully');
+  };
+
   return (
-    <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
-      <div className='w-50 border bg-light p-5'>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor='titleInput'>Title</label>
-            <input
-              type='text'
-              className='form-control'
-              id='titleInput'
-              value={title}
-              onChange={handleTitleChange}
-            />
-          </div>
-          <div>
-            <input
-              className='form-check-input'
-              type='checkbox'
-              id='completedCheckbox'
-              checked={completed}
-              onChange={handleCompletedChange}
-            />
-            <label className='form-check-label' htmlFor='completedCheckbox'>
-              Completed
-            </label>
-          </div>
-          <br />
-          <button type='submit' className='btn btn-info'>
+    <div className="container mt-5">
+      <h2>Edit Task</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mt-3">
+          <label htmlFor="title" className="form-label">
+            Title
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="title"
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </div>
+        <div className="mt-3 form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="completed"
+            checked={completed}
+            onChange={handleCompletedChange}
+          />
+          <label htmlFor="completed" className="form-check-label">
+            Completed
+          </label>
+        </div>
+        <div className="mt-3">
+          <button type="submit" className="btn btn-primary me-2">
             Update Task
           </button>
-        </form>
-      </div>
+          <Link to="/" className="btn btn-secondary">
+            Cancel
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

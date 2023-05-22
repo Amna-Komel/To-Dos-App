@@ -1,61 +1,82 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { addTaskToLocalStorage } from '../API/API';
 
-function Add({ addTask }) {
+let taskId = 0;
+
+function Add() {
   const navigate = useNavigate();
-  const [inputData, setInputData] = useState({ title: '', completed: false });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newTask = {
-      title: inputData.title,
-      completed: inputData.completed
-    };
-    axios.post('https://jsonplaceholder.typicode.com/todos', newTask)
-      .then((response) => {
-        const createdTask = {
-          ...newTask,
-          id: response.data.id,
-          userId: 1
-        };
-        addTask(createdTask); // Update the task list
-        alert('Data Added Successfully');
-        navigate('/');
-      })
-      .catch((error) => console.log(error));
-  };
+  const [title, setTitle] = useState('');
+  const [completed, setCompleted] = useState(false);
 
   const handleTitleChange = (e) => {
-    setInputData({ ...inputData, title: e.target.value });
+    setTitle(e.target.value);
   };
 
   const handleCompletedChange = (e) => {
-    setInputData({ ...inputData, completed: e.target.checked });
+    setCompleted(e.target.checked);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (title.trim() === '') {
+      alert('Please enter a task title');
+      return;
+    }
+
+    const newTask = {
+      id: taskId++,
+      title: title.trim(),
+      completed,
+    };
+
+    addTaskToLocalStorage(newTask);
+    setTitle('');
+    setCompleted(false);
+    navigate('/');
+    alert('Task added successfully');
   };
 
   return (
-    <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
-      <div className='w-50 border bg-light p-5'>
+    <>
+      <div className="container mt-5">
+        <h2>Add Task</h2>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="titleInput">Title</label>
-            <input type="text"className="form-control"id="titleInput"value={inputData.title}
-            onChange={handleTitleChange}/>
+          <div className="mt-3">
+            <label htmlFor="title" className="form-label">
+              Title
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              value={title}
+              onChange={handleTitleChange}
+            />
           </div>
-          <div>
-            <input className="form-check-input"type="checkbox" id="completedCheckbox"checked={inputData.completed}
-            onChange={handleCompletedChange}/>
-            <label className="form-check-label" htmlFor="completedCheckbox">
+          <div className="mt-3 form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="completed"
+              checked={completed}
+              onChange={handleCompletedChange}
+            />
+            <label htmlFor="completed" className="form-check-label">
               Completed
             </label>
           </div>
-          <button type="submit" className="btn btn-info">
-            Add Task
-          </button>
+          <div className="mt-3">
+            <button type="submit" className="btn btn-primary me-2">
+              Add Task
+            </button>
+            <Link to="/" className="btn btn-secondary">
+              Cancel
+            </Link>
+          </div>
         </form>
       </div>
-    </div>
+    </>
   );
 }
 

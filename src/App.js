@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Components/Header/Header';
 import Structure from './Components/Structure/Structure';
@@ -6,23 +6,6 @@ import Add from './Components/Add/Add';
 import Edit from './Components/Edit/Edit';
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-
-  const addTask = (newTask) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
-
-  const updateTask = (updatedTask) => {
-    setTasks((prevTasks) => {
-      return prevTasks.map((task) => {
-        if (task.id === updatedTask.id) {
-          return updatedTask;
-        }
-        return task;
-      });
-    });
-  };
-
   return (
     <div>
       <BrowserRouter>
@@ -30,12 +13,12 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Structure tasks={tasks} updateTask={updateTask} />}
+            element={<Structure  />}
           />
-          <Route path="/create" element={<Add addTask={addTask} />} />
+          <Route path="/add" element={<Add  />} />
           <Route
-            path="/update/:id"
-            element={<Edit tasks={tasks} updateTask={updateTask} />}
+            path="/edit/:id"
+            element={<Edit />}
           />
         </Routes>
       </BrowserRouter>
@@ -44,4 +27,3 @@ function App() {
 }
 
 export default App;
-
