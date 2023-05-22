@@ -20,9 +20,12 @@ function Edit({ tasks, updateTask }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const data = { title:title, completed:completed }
+      const headers={"Content-type":"application/json"}
       const response = await axios.put(
         `https://jsonplaceholder.typicode.com/todos/${id}`,
-        { title, completed }
+        data,
+        {headers}
       );
       console.log("response",response.data,'respojse')
       const updatedTask = response.data;
