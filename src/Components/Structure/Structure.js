@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Structure.css'
 import { Link } from 'react-router-dom';
 import { getTasksFromLocalStorage, deleteTaskFromLocalStorage, fetchTasksFromAPI } from '../API/API';
 
@@ -30,12 +31,14 @@ export default function Structure() {
 
   const filterTasks = (task) => {
     if (filterOption === 'completed') {
-      return task.completed;
+      return task.completed && task.title.toLowerCase().includes(searchQuery.toLowerCase());
     } else if (filterOption === 'incompleted') {
-      return !task.completed;
+      return !task.completed && task.title.toLowerCase().includes(searchQuery.toLowerCase());
     }
-    return true; // Show all tasks when filterOption is 'all'
+    return task.title.toLowerCase().includes(searchQuery.toLowerCase());
   };
+
+  const filteredTasks = tasks.filter(filterTasks);
 
   return (
     <>
@@ -63,37 +66,38 @@ export default function Structure() {
               <option value="incompleted">Incompleted Tasks</option>
             </select>
           </div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Completed</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.length > 0 &&
-                tasks
-                  .filter(filterTasks)
-                  .map((task) => (
-                    <tr key={task.id}>
-                      <td>{task.title}</td>
-                      <td>{task.completed ? 'Yes' : 'No'}</td>
-                      <td>
-                        <Link to={`/edit/${task.id}`} className="btn btn-sm btn-primary me-1">
-                          Edit
-                        </Link>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => handleDelete(task.id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-            </tbody>
-          </table>
+          {filteredTasks.length === 0 ? (
+            <p>No tasks found matching the search.</p>
+          ) : (
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Completed</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTasks.map((task) => (
+                  <tr key={task.id}>
+                    <td>{task.title}</td>
+                    <td>{task.completed ? 'Yes' : 'No'}</td>
+                    <td>
+                      <Link to={`/edit/${task.id}`} className="btn btn-sm btn-success me-1">
+                        Edit
+                      </Link>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(task.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>

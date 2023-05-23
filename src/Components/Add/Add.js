@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addTaskToLocalStorage } from '../API/API';
+import './Add.css'
 
 let taskId = 0;
 
@@ -38,8 +39,7 @@ function Add() {
   };
 
   return (
-    <>
-      <div className="container mt-5">
+      <div className="container pb-5 mt-5">
         <h2>Add Task</h2>
         <form onSubmit={handleSubmit}>
           <div className="mt-3">
@@ -76,7 +76,6 @@ function Add() {
           </div>
         </form>
       </div>
-    </>
   );
 }
 

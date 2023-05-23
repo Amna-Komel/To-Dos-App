@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getTasksFromLocalStorage, updateTaskInLocalStorage } from '../API/API';
 
+
 function Edit() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -48,10 +49,10 @@ function Edit() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container pb-5 mt-5">
       <h2>Edit Task</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mt-3">
+        <div className=" mt-3">
           <label htmlFor="title" className="form-label">
             Title
           </label>

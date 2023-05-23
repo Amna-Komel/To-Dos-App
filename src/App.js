@@ -8,19 +8,13 @@ import './App.css';
 
 function App() {
   return (
-    <div>
+    <div className='back'>
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route
-            path="/"
-            element={<Structure  />}
-          />
-          <Route path="/add" element={<Add  />} />
-          <Route
-            path="/edit/:id"
-            element={<Edit />}
-          />
+          <Route path="/"element={<Structure/>}/>
+          <Route path="/add" element={<Add/>} />
+          <Route path="/edit/:id"element={<Edit/>}/>
         </Routes>
       </BrowserRouter>
     </div>
