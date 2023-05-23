@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from './Components/Header/Header'
+import Structure from './Components/Structure/Structure';
+import Add from './Components/Add/Add';
+import Edit from './Components/Edit/Edit';
 
 function App() {
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (newTask) => {
+    setTasks([...tasks, newTask]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Header/>
+        <Routes>
+          <Route path="/"element={<Structure tasks={tasks} />}/>
+          <Route path="/create" element={<Add addTask={addTask} />}/>
+          <Route path="update/:id" element={<Edit/>}/>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
