@@ -4,6 +4,7 @@ import Header from './Components/Header/Header';
 import Structure from './Components/Structure/Structure';
 import Add from './Components/Add/Add';
 import Edit from './Components/Edit/Edit';
+import './App.css';
 
 function App() {
   return (

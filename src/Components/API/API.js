@@ -3,7 +3,7 @@ import axios from 'axios';
 // Fetch tasks from the API and store them in local storage
 export const fetchTasksFromAPI = async () => {
   try {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/todos'); // Replace with your actual API endpoint
+    const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
     const tasks = response.data;
     localStorage.setItem('tasks', JSON.stringify(tasks));
     return tasks;
@@ -12,7 +12,6 @@ export const fetchTasksFromAPI = async () => {
     return [];
   }
 };
-
 // Get tasks from local storage
 export const getTasksFromLocalStorage = () => {
   const tasks = localStorage.getItem('tasks');
@@ -27,14 +26,14 @@ export const saveTasksToLocalStorage = (tasks) => {
 // Add a new task to the local storage
 export const addTaskToLocalStorage = (task) => {
   const tasks = getTasksFromLocalStorage();
-  const newTasks = [...tasks, task];
+  const newTasks = [task, ...tasks];
   saveTasksToLocalStorage(newTasks);
 };
 
 // Update a task in the local storage
 export const updateTaskInLocalStorage = (updatedTask) => {
   const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.map((task) =>
+  const updatedTasks = tasks?.map((task) =>
     task.id === updatedTask.id ? updatedTask : task
   );
   saveTasksToLocalStorage(updatedTasks);
@@ -43,6 +42,6 @@ export const updateTaskInLocalStorage = (updatedTask) => {
 // Delete a task from the local storage
 export const deleteTaskFromLocalStorage = (taskId) => {
   const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.filter((task) => task.id !== taskId);
+  const updatedTasks = tasks?.filter((task) => task.id !== taskId);
   saveTasksToLocalStorage(updatedTasks);
 };

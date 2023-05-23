@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getTasksFromLocalStorage, deleteTaskFromLocalStorage } from '../API/API';
+import { getTasksFromLocalStorage, deleteTaskFromLocalStorage, fetchTasksFromAPI } from '../API/API';
 
-function Structure() {
+export default function Structure() {
   const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOption, setFilterOption] = useState('all');
 
   useEffect(() => {
-    const tasksFromLocalStorage = getTasksFromLocalStorage();
-    setTasks(tasksFromLocalStorage);
+    var task = getTasksFromLocalStorage();
+    console.log(task)
+    if(task.length === 0){
+       fetchTasksFromAPI().then(res => setTasks(res));
+    } else {
+      setTasks(task);
+    }
   }, []);
 
   const handleDelete = (taskId) => {
     deleteTaskFromLocalStorage(taskId);
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    setTasks((prevTasks) => prevTasks?.filter((task) => task.id !== taskId));
     alert('Task deleted successfully');
   };
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+    setFilterOption('all');
   };
 
-  const handleFilter = (e) => {
-    setFilterOption(e.target.value);
-  };
-
-  const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
-  ).filter((task) => {
+  const filterTasks = (task) => {
     if (filterOption === 'completed') {
       return task.completed;
-    } else if (filterOption === 'incomplete') {
+    } else if (filterOption === 'incompleted') {
       return !task.completed;
-    } else {
-      return true;
     }
-  });
+    return true; // Show all tasks when filterOption is 'all'
+  };
 
   return (
     <>
@@ -54,16 +53,14 @@ function Structure() {
             />
           </div>
           <div className="mt-3">
-            <label htmlFor="filter" className="form-label">Filter:</label>
             <select
               className="form-select"
-              id="filter"
               value={filterOption}
-              onChange={handleFilter}
+              onChange={(e) => setFilterOption(e.target.value)}
             >
               <option value="all">All Tasks</option>
               <option value="completed">Completed Tasks</option>
-              <option value="incomplete">Incomplete Tasks</option>
+              <option value="incompleted">Incompleted Tasks</option>
             </select>
           </div>
           <table className="table table-striped">
@@ -75,23 +72,26 @@ function Structure() {
               </tr>
             </thead>
             <tbody>
-              {filteredTasks.map((task) => (
-                <tr key={task.id}>
-                  <td>{task.title}</td>
-                  <td>{task.completed ? 'Yes' : 'No'}</td>
-                  <td>
-                    <Link to={`/edit/${task.id}`} className="btn btn-sm btn-primary me-1">
-                      Edit
-                    </Link>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDelete(task.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {tasks.length > 0 &&
+                tasks
+                  .filter(filterTasks)
+                  .map((task) => (
+                    <tr key={task.id}>
+                      <td>{task.title}</td>
+                      <td>{task.completed ? 'Yes' : 'No'}</td>
+                      <td>
+                        <Link to={`/edit/${task.id}`} className="btn btn-sm btn-primary me-1">
+                          Edit
+                        </Link>
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => handleDelete(task.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
         </div>
@@ -99,5 +99,3 @@ function Structure() {
     </>
   );
 }
-
-export default Structure;
