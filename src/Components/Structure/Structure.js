@@ -21,7 +21,7 @@ export default function Structure() {
   const handleDelete = (taskId) => {
     deleteTaskFromLocalStorage(taskId);
     setTasks((prevTasks) => prevTasks?.filter((task) => task.id !== taskId));
-    alert('Task deleted successfully');
+    alert('Do you really want delete the task?');
   };
 
   const handleSearch = (e) => {
@@ -37,7 +37,6 @@ export default function Structure() {
     }
     return task.title.toLowerCase().includes(searchQuery.toLowerCase());
   };
-
   const filteredTasks = tasks.filter(filterTasks);
 
   return (
@@ -47,29 +46,22 @@ export default function Structure() {
         <div className="mt-3">
           <Link to="/add" className="btn btn-primary">Add Task</Link>
           <div className="mt-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search tasks"
-              value={searchQuery}
-              onChange={handleSearch}
-            />
+            <input type="text"className="form-control"placeholder="Search tasks" value={searchQuery}
+              onChange={handleSearch}/>
           </div>
           <div className="mt-3">
             <select
-              className="form-select"
-              value={filterOption}
-              onChange={(e) => setFilterOption(e.target.value)}
-            >
+              className="form-select"value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}>
               <option value="all">All Tasks</option>
               <option value="completed">Completed Tasks</option>
               <option value="incompleted">Incompleted Tasks</option>
             </select>
           </div>
           {filteredTasks.length === 0 ? (
-            <p>No tasks found matching the search.</p>
+            <p className='notask'>No tasks found matching the search.</p>
           ) : (
-            <table className="table table-striped">
+            <table className="table table-striped c-black">
               <thead>
                 <tr>
                   <th>Title</th>
@@ -83,15 +75,9 @@ export default function Structure() {
                     <td>{task.title}</td>
                     <td>{task.completed ? 'Yes' : 'No'}</td>
                     <td>
-                      <Link to={`/edit/${task.id}`} className="btn btn-sm btn-success me-1">
-                        Edit
-                      </Link>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDelete(task.id)}
-                      >
-                        Delete
-                      </button>
+                      <Link to={`/edit/${task.id}`} className="btn btn-sm btn-success me-1"> Edit</Link>
+                      <button className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(task.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

@@ -13,9 +13,7 @@ function Edit() {
   useEffect(() => {
     const tasksFromLocalStorage = getTasksFromLocalStorage();
     setTasks(tasksFromLocalStorage);
-
     const task = tasksFromLocalStorage.find((task) => task.id === parseInt(id));
-
     if (task) {
       setTitle(task.title);
       setCompleted(task.completed);
