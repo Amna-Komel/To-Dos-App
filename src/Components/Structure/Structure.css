@@ -1,0 +1,10 @@
+.table{
+  border: rgb(14, 12, 12) 2px solid;
+  margin-top: 2rem;
+}
+.notask{
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 3rem;
+}
