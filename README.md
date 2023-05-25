@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# To-Do App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple to-do application built using React, HTML, CSS, and JavaScript. The app allows users to manage their tasks by adding, editing, and deleting them. Users can mark tasks as completed and filter tasks based on their completion status. The app utilizes local storage to persist user tasks and makes use of the Fetch API for retrieving data from the Todo API.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Add new tasks: Users can add new tasks by filling out the form provided on the main page. The task will be displayed in the task list.
+- Edit tasks: Users can edit existing tasks by clicking on the "Edit" button next to the task. This will take them to a separate page where they can modify the task details.
+- Delete tasks: Users can delete tasks by clicking on the "Delete" button next to the task. A confirmation dialog will be displayed to ensure the user intends to delete the task.
+- Mark tasks as completed: Users can mark tasks as completed by clicking on the checkbox next to the task. Completed tasks will be visually differentiated from incomplete tasks.
+- Filter tasks: Users can filter tasks based on their completion status. Three filter options are available: "All Tasks" to display all tasks, "Incomplete Tasks" to display only tasks that are not completed, and "Completed Tasks" to display only completed tasks.
+- Search functionality: Users can search for specific tasks using the search bar. The app will filter the tasks based on the search query in real-time.
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React: JavaScript library for building user interfaces.
+- HTML: Markup language for creating the structure of the web pages.
+- CSS: Stylesheet language for designing the visual presentation of the app.
+- JavaScript: Programming language for implementing dynamic functionality.
+- Fetch API: Browser API used to make HTTP requests to retrieve data from the Todo API.
+- Local storage: Web storage mechanism used to persist user tasks on the client-side.
+- GitHub: Version control system for tracking changes and collaborating with other developers.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Setup and Usage
 
-### `npm test`
+1. Clone the repository or download the source code.
+2. Open the project in your preferred code editor.
+3. Install the necessary dependencies by running the command `npm install` in the project directory.
+4. Start the development server by running the command `npm start`.
+5. Open your web browser and navigate to `http://localhost:3000` to access the to-do app.
+6. Interact with the app by adding, editing, and deleting tasks. Use the provided filters and search bar to manage and find specific tasks.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Deployment
 
-### `npm run build`
+The application can be deployed using Netlify or any other hosting platform of your choice. Here are the general steps for deploying on Netlify:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Create a new account on Netlify if you haven't already.
+2. Connect your GitHub account to Netlify.
+3. Create a new site from the Netlify dashboard.
+4. Configure the deployment settings, including the repository and build commands.
+5. Once configured, Netlify will automatically build and deploy your app whenever changes are pushed to the repository.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contribution
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Contributions to this project are welcome. If you find any bugs or have suggestions for improvement, please feel free to open an issue or submit a pull request.
 
-### `npm run eject`
+## License
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This project is licensed under the MIT License. You can find more details in the [LICENSE](LICENSE) file.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Acknowledgements
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Todo API for providing the data used in this application.
+- React for the JavaScript library used in building the UI.
+- Netlify for offering free hosting and deployment services.
